@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+<!-- {% block styles %}
+{% endblock %} -->
+
+
+{% block content %}  
+<div>
+    <form class="search-form">
+        {%csrf_token%}
+        <input type="text" class="search-input" placeholder="type here">
+        <button type="submit" class="search-button">search</button>
+    </form>
+    <div class="results"></div>
+</div>
+
+
+<script>
+    
+    const searchForm = document.querySelector('.search-form')
+    const searchInput = document.querySelector('.search-input');
+
+    searchForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        
+        const searchItem = searchInput.value.trim();
+        if (searchItem.length === 0) {
+            return;
+        }
+
+        fetch('', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+                'csrfmiddlewaretoken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                'searchItem': searchItem
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const response = data.response;
+            console.log(response);
+            const movieItem = document.createElement('div');
+            // messageItem.classList.add('message', 'received');
+            movieItem.innerHTML = `
+            <div>
+                <b>Movie</b>
+                </div>
+                <div>
+                    ${response}
+                </div>
+            </div>
+            `;
+            const results = document.querySelector('.results');
+            results.innerHTML = '';
+            results.appendChild(movieItem);
+        });
+    });
+    
+</script>
+{% endblock %}
