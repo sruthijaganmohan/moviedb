@@ -11,7 +11,16 @@
         <input type="text" class="search-input" placeholder="type here">
         <button type="submit" class="search-button">search</button>
     </form>
-    <div class="results"></div>
+
+    <div class="details-parent" style="background-color:red; position: fixed; top: 0; left: 0;display: flex; justify-content: center; align-items: center; z-index: 9999;">
+        <button class="close-button" style="display: none;">x</button>
+        <div class="details" style="display: none;"></div>
+    </div>
+    
+
+    <div class="movies-parent">
+        <div class="movies"></div>
+    </div>
 </div>
 
 
@@ -19,6 +28,10 @@
     
     const searchForm = document.querySelector('.search-form')
     const searchInput = document.querySelector('.search-input');
+    const movies = document.querySelector('.movies');
+    const moviesParent = document.querySelector('.movies-parent');
+    const details = document.querySelector('.details');
+    const closeButton = document.querySelector('.close-button');
 
     searchForm.addEventListener('submit', (event) => {
         event.preventDefault();
@@ -40,20 +53,36 @@
         .then(data => {
             const response = data.response;
             console.log(response);
-            const movieItem = document.createElement('div');
-            // messageItem.classList.add('message', 'received');
-            movieItem.innerHTML = `
-            <div>
-                <b>Movie</b>
-                </div>
-                <div>
-                    ${response}
-                </div>
-            </div>
-            `;
-            const results = document.querySelector('.results');
-            results.innerHTML = '';
-            results.appendChild(movieItem);
+            
+            movies.innerHTML = '';
+            for (const item of response) {
+                // console.log(item);
+                const movie = document.createElement('div');
+                movie.classList.add('movie');
+                movie.innerHTML = `
+                    <div>
+                        ${item}
+                    </div>
+                `;
+                movies.appendChild(movie);
+
+                movie.addEventListener('click', (event) => {
+                    details.style.display = 'block';
+                    closeButton.style.display = 'block'
+                    details.innerHTML = '';
+                    details.innerHTML = `
+                        <div>
+                            ${item}
+                        <div>
+                    `;
+                });  
+                
+                closeButton.addEventListener('click', (event) => {
+                    closeButton.style.display = "none";
+                    details.style.display = "none";
+                })
+            }
+
         });
     });
     
