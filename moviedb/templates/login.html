@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+<!-- {% block styles %}
+{% endblock %} -->
+
+
+{% block content %}  
+<div class="login-parent">
+    {% if error_message %}
+        <div class="error-message" role="alert">{{ error_message }}</div>
+    {% endif %}
+    <form class="login" method="post">
+        {% csrf_token %}
+        <input type="text" placeholder="username" class="username" name="username" required>
+        <input type="password" placeholder="password" class="password" name="password" required>
+        <button type="submit" class="login-button">login</button>
+    </form>
+</div>
+{% endblock %}

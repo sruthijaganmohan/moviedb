@@ -1,5 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
+from django.contrib import auth
+from django.contrib.auth.models import User
+from django.utils import timezone
 import omdb
 
 # Create your views here.
@@ -26,3 +29,45 @@ def movies(request):
         response = ask_omdb(searchItem)
         return JsonResponse({'response': response})
     return render(request, 'movies.html')
+
+def register(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        username = request.POST['username']
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+
+        if password1 == password2:
+            try:
+                user = User.objects.create_user(email, username, password1)
+                user.save()
+                auth.login(request, user)
+                return redirect('movies')
+            except:
+                error_message = 'Error creating account'
+                return render(request, 'register.html', {'error_message':error_message})
+        else:
+            error_message = 'Password does not match'
+            return render(request, 'register.html', {'error_message':error_message})
+    return render(request, 'register.html')
+
+def login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = auth.authenticate(request, username=username, password=password)
+        if user is not None:
+            auth.login(request, user)
+            return redirect('movies')
+        else:
+            error_message = 'Invalid username or password'
+            return render(request, 'login.html', {'error_message':error_message})
+    else:
+        return render(request, 'login.html')
+
+def logout(request):
+    auth.logout(request)
+    return redirect('movies')
+
+def account(request):
+    return render(request, 'account.html')

@@ -6,15 +6,22 @@
 
 {% block content %}  
 <div>
+    {% if user.is_authenticated %}
+        <div><b>hi, {{user.username}}</b>   <a href="logout">Logout</a></div>
+    {% else %}
+        <div><a href="login">Login</a>   <a href="register">Register</a></div>
+    {% endif %}
     <form class="search-form">
         {%csrf_token%}
         <input type="text" class="search-input" placeholder="type here">
         <button type="submit" class="search-button">search</button>
     </form>
 
-    <div class="details-parent" style="background-color:red; position: fixed; top: 0; left: 0;display: flex; justify-content: center; align-items: center; z-index: 9999;">
+    <div class="details-parent" style="background-color:cornflowerblue; position: fixed; top: 0; left: 0;display: flex; justify-content: center; align-items: center; z-index: 9999;">
         <button class="close-button" style="display: none;">x</button>
         <div class="details" style="display: none;"></div>
+        <button class="favorites" style="display: none;">fav</button>
+        <button class="watch" style="display: none;">watch</button>
     </div>
     
 
@@ -32,6 +39,11 @@
     const moviesParent = document.querySelector('.movies-parent');
     const details = document.querySelector('.details');
     const closeButton = document.querySelector('.close-button');
+    const favorites = document.querySelector('.favorites');
+    const watch = document.querySelector('.watch');
+    const favoritesList = [];
+    const watchList = [];
+    var movieClicked = "";
 
     searchForm.addEventListener('submit', (event) => {
         event.preventDefault();
@@ -66,25 +78,40 @@
                 `;
                 movies.appendChild(movie);
 
+                
                 movie.addEventListener('click', (event) => {
+                    movieClicked = item;
                     details.style.display = 'block';
-                    closeButton.style.display = 'block'
+                    closeButton.style.display = 'block';
+                    favorites.style.display = 'block';
+                    watch.style.display = 'block';
                     details.innerHTML = '';
                     details.innerHTML = `
                         <div>
                             ${item}
                         <div>
-                    `;
+                    `;                    
                 });  
                 
                 closeButton.addEventListener('click', (event) => {
                     closeButton.style.display = "none";
                     details.style.display = "none";
-                })
-            }
+                    favorites.style.display = "none";
+                    watch.style.display = "none";
 
+                });
+                
+            }
         });
     });
-    
+    favorites.addEventListener('click', (event) => {
+        favoritesList.push(movieClicked);
+        console.log(favoritesList);
+    });
+
+    watch.addEventListener('click', (event) => {
+        watchList.push(movieClicked);
+        console.log(watchList);
+    });
 </script>
 {% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+<!-- {% block styles %}
+{% endblock %} -->
+
+
+{% block content %}  
+<div class="register-parent">
+    {% if error_message %}
+        <div class="error-message" role="alert">{{ error_message }}</div>
+    {% endif %}
+    <form class="register" method="post">
+        {% csrf_token %}
+        <input type="email" placeholder="email" class="email" name="email" required>
+        <input type="text" placeholder="username" class="username" name="username" required>
+        <input type="password" placeholder="password" class="password" name="password1" required>
+        <input type="password" placeholder="confirm password" class="password" name="password2" required>
+        <button type="submit" class="register-button">register</button>
+    </form>
+</div>
+{% endblock %}
