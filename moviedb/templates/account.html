@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+<!-- {% block styles %}
+{% endblock %} -->
+
+
+{% block content %}  
+<div class="login-parent">
+    {% csrf_token %}
+    <label>{{user.username}}</label>
+    <label>Favorites</label>
+    <div class="favorites"></div>
+    <label>watchlist</label>
+    <div class="watch"></div>
+    
+</div>
+
+<script>
+    const favorites = document.querySelector('.favorites');
+    const watch = document.querySelector('.watch');
+    const favoritesList = localStorage.getItem('favorites');
+    const watchList = localStorage.getItem('watch');
+    favorites.innerHTML = `
+    <div>
+        ${favoritesList}
+    <div>
+    `;
+
+    watch.innerHTML = `
+    <div>
+        <input type="checkbox">
+        ${watchList}
+    <div>
+    `;
+</script>
+{% endblock %}

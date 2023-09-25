@@ -106,11 +106,13 @@
     });
     favorites.addEventListener('click', (event) => {
         favoritesList.push(movieClicked);
+        localStorage.setItem('favorites', favoritesList);
         console.log(favoritesList);
     });
 
     watch.addEventListener('click', (event) => {
         watchList.push(movieClicked);
+        localStorage.setItem('watch', watchList);
         console.log(watchList);
     });
 </script>

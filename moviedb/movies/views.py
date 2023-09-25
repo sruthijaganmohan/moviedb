@@ -32,14 +32,14 @@ def movies(request):
 
 def register(request):
     if request.method == 'POST':
-        email = request.POST['email']
         username = request.POST['username']
+        email = request.POST['email']
         password1 = request.POST['password1']
         password2 = request.POST['password2']
 
         if password1 == password2:
             try:
-                user = User.objects.create_user(email, username, password1)
+                user = User.objects.create_user(username, email, password1)
                 user.save()
                 auth.login(request, user)
                 return redirect('movies')
