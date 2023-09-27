@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib import auth
 from django.contrib.auth.models import User
-from django.utils import timezone
 import omdb
+from .models import Acc
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def ask_omdb(searchItem):
@@ -41,6 +42,8 @@ def register(request):
             try:
                 user = User.objects.create_user(username, email, password1)
                 user.save()
+                acc = Acc(user=user)
+                acc.save()
                 auth.login(request, user)
                 return redirect('movies')
             except:
@@ -69,5 +72,15 @@ def logout(request):
     auth.logout(request)
     return redirect('movies')
 
-def account(request):
-    return render(request, 'account.html')
+@login_required
+def account(request):   
+    if request.method == 'POST':
+        response = request.POST.get('watchList')
+        acc = Acc.objects.get(user=request.user)
+        acc.watch_list += response + ','
+        acc.save()
+        
+        return JsonResponse({'response': 'Watch list updated successfully'})
+    acc = Acc.objects.get(user=request.user)
+    return render(request, 'account.html', {'watch_list': acc.watch_list}) 
+    # return render(request, 'account.html')
