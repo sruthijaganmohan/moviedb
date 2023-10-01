@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def ask_omdb(searchItem):
-    omdb.set_default('apikey', '134c4e2a')
+    omdb.set_default('apikey', 'apiKey')
     movies = omdb.search(searchItem)
     if movies:
         ans = ""
