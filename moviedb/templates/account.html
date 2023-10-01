@@ -1,25 +1,63 @@
 {% extends 'base.html' %}
 
-<!-- {% block styles %}
-{% endblock %} -->
+{% block styles %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Bakbak+One&family=Dela+Gothic+One&family=Krona+One&family=Rubik+Mono+One&display=swap');
+    html, body {
+        background-color: #08000B;
+    }
+
+    h2 {
+        background-color: #08000B;
+        color: #ffffff;
+        font-family: 'Krona One', sans-serif;
+        padding-left: 150px;
+        margin-top: 100px;
+    }
+
+    h4 {
+        background-color: #08000B;
+        color: #ffffff;
+        font-family: 'Krona One', sans-serif;
+        padding-left: 150px;
+        margin-top: 50px;
+    }
+
+    .hidden {
+        background-color: #08000B;
+    }
+
+    .watch {
+        margin-top: 30px;
+        padding-left: 150px;
+        font-family: 'Krona One', sans-serif;
+        font-size: 23px;
+        color: #ffffff;
+    }
+</style>
+{% endblock %}
 
 
-{% block content %}  
-<div>
-    <label>{{user.username}}</label>
-    <label>watchlist</label>
-    <div class="watch"></div>
-    <div class="watch">{{ watch_list }}</div>  
-</div>
-
-<script>
-    // var watchList = localStorage.getItem('response');
-    // const watch = document.querySelector('.watch');
-    // watch.innerHTML = `
-    // <div>
-    //     <input type="checkbox">
-    //     ${watchList}
-    // <div>
-    // `;
-</script>
+{% block content %} 
+<body>
+    <h2>{{user.username}}</h2>
+    <h4>your watchlist:</h4>
+    <div type="hidden" class="hidden" style="display: none;">{{watch_list}}</div> 
+    
+    <div class="watch">
+    </div>
+</body>
+    <script>
+        var hidden = document.querySelector('.hidden')
+        var hiddenText = hidden.textContent
+        var titles = hiddenText.split(/\s\d{4}(?=\s|$)/g);
+    
+        var watch = document.querySelector(".watch");
+        titles.forEach(function (title) {
+            var div = document.createElement("div");
+            div.textContent = title;
+            watch.appendChild(div);
+        });
+    </script>
+  
 {% endblock %}

@@ -13,15 +13,22 @@ def ask_omdb(searchItem):
     if movies:
         ans = ""
         for movie in movies:
-            title = movie['title']
-            year = movie['year']
-            poster_url = movie['poster']
-            ans += f"Title: {title} Year: {year}<br>"
+            title = movie.get('title', 'N/A')
+            year = movie.get('year', 'N/A')
+            # plot = movie.get('plot', 'N/A')
+            # genre = movie.get('genre', 'N/A')
+            # rating = movie.get('imdb_rating', 'N/A')
+            poster_url = movie.get('poster', 'N/A')
+            poster_url = poster_url if poster_url != 'N/A' else 'https://via.placeholder.com/400'
             ans += f'<img src="{poster_url}" alt="{title} Poster"><br>'
+            ans += f"<p>{title}\t{year}</p><br>"
+            # ans += f"{genre}\t{rating}<br>"
+            # ans += f"{plot}<br>"
             ans += "ducks"
         return list(ans.split("ducks"))[:-1]
     else:
         return "No movies found"
+
 
     
 def movies(request):
@@ -77,10 +84,8 @@ def account(request):
     if request.method == 'POST':
         response = request.POST.get('watchList')
         acc = Acc.objects.get(user=request.user)
-        acc.watch_list += response + ','
+        acc.watch_list += response + '\n'
         acc.save()
-        
         return JsonResponse({'response': 'Watch list updated successfully'})
     acc = Acc.objects.get(user=request.user)
     return render(request, 'account.html', {'watch_list': acc.watch_list}) 
-    # return render(request, 'account.html')

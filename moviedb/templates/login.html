@@ -1,18 +1,71 @@
 {% extends 'base.html' %}
 
-<!-- {% block styles %}
-{% endblock %} -->
+{% block styles %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Bakbak+One&family=Dela+Gothic+One&family=Krona+One&family=Rubik+Mono+One&display=swap');
+    html {
+        background-color: #08000B;
+    }
+
+    h2 {
+        color: #ffffff;
+        font-family: 'Krona One', sans-serif;
+    }
+
+    .error-message {
+        background-color: rgb(210, 108, 130);
+        color: #ffffff;
+        width: 257px;
+        font-size: 10px;
+        padding: 5px;
+        text-align: center;
+    }
+
+    .login-parent {
+        background-color: #08000B;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 100px;
+        font-family: 'Krona One', sans-serif;
+    }
+
+    .username, .password {
+        border: none;
+        font-family: 'Krona One', sans-serif;
+        background-color: #ffffff;
+        color: #08000B;
+        padding: 15px
+    }
+
+    .login-button {
+        border: none;
+        font-family: 'Krona One', sans-serif;
+        background-color: #ffffff;
+        color: #08000B;
+        padding: 20px;
+        width: 257px;
+    }
+
+    .login-button:hover {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
+        transform: scale(1.05, 1.05);
+    }
+</style>
+{% endblock %}
 
 
 {% block content %}  
 <div class="login-parent">
+    <h2>LOGIN</h2><br><br>
     {% if error_message %}
-        <div class="error-message" role="alert">{{ error_message }}</div>
+        <div class="error-message" role="alert">{{ error_message }}</div><br>
     {% endif %}
     <form class="login" method="post">
         {% csrf_token %}
-        <input type="text" placeholder="username" class="username" name="username" required>
-        <input type="password" placeholder="password" class="password" name="password" required>
+        <input type="text" placeholder="username" class="username" name="username" required><br><br>
+        <input type="password" placeholder="password" class="password" name="password" required><br><br>
         <button type="submit" class="login-button">login</button>
     </form>
 </div>

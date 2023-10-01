@@ -1,49 +1,290 @@
 {% extends 'base.html' %}
 
-<!-- {% block styles %}
-{% endblock %} -->
+{% block styles %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Bakbak+One&family=Dela+Gothic+One&family=Krona+One&family=Rubik+Mono+One&display=swap');
+    html {
+        color: #08000B;
+        font-family: 'Krona One', sans-serif;
+    }
+    
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100%;
+        background-color: #08000B;
+        opacity: 80%;
+        z-index: 1;
+    }
+
+    /* header */
+    .header {
+        background-color: #08000B;
+        color: #ffffff;
+        display: flex;
+        justify-content: space-between;
+        font-family: 'Rubik Mono One', sans-serif;
+    }
+
+    .user-element-left {
+        margin-left: 50px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        
+    }
+
+    h2:hover {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
+        transform: scale(1.05, 1.05);
+    }
+
+    .user-element-right {
+        margin-right: 50px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        text-decoration: none;
+    }
+
+    a {
+        color: #ffffff;
+        text-decoration: none;
+        text-decoration-line: none;
+    }
+
+    a:hover {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
+        transform: scale(1.05, 1.05);
+    }
+
+    /* carousel images */
+    .carousel-container {
+        background-color: #08000B;
+        top: 0;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .carousel-slide {
+        display: none;
+        animation: fade 3s ease infinite;
+    }
+
+    @keyframes fade {
+        0% {
+            opacity: 0;
+        }
+        20% {
+            opacity: 1;
+        }
+        80% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+
+    /* search */
+    .search {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #08000B;
+        padding-top: 120px;
+        padding-bottom: 150px;
+        font-size: 30px;
+    }
+
+    .search-input {
+        background-color: #08000B;
+        color: #ffffff;
+        font-family: 'Rubik Mono One', sans-serif;
+        border: #ffffff solid 3px;
+        padding: 10px;
+        width: 800px;
+    }
+
+    .search-button {
+        background-color: #ffffff;
+        color: #08000B;
+        font-family: 'Rubik Mono One', sans-serif;
+        border: none;
+        padding: 12.5px;
+        margin-left: -10px;
+        width: 300px;
+    }
+
+    .search-button:hover {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
+        transform: scale(1.05, 1.05);
+    }
+
+    /* movies */
+    .movies-parent{
+        background-color: #08000B;
+        padding-bottom: 100px;
+    }
+
+    .movies {
+        margin-left: 440px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .movie {
+        margin-top: 70px;
+        margin-left: -200px;
+        background-color: #ffffff;
+        font-family: 'Rubik Mono One', sans-serif;
+        width: 320px;
+        opacity: 50%;
+    }
+
+    .movie:hover {
+        opacity: 100%;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
+        transform: scale(1.05, 1.05);
+    }
+
+    .movie img {
+        margin-top: 15px;
+        margin-left: 15px;
+        height:420px;
+        width: 290px;
+    }
+
+    .movie p {
+        margin-top: 15px;
+        margin-left: 15px;
+        margin-right: 15px;
+        font-size: 15px;
+    }
+
+    /* details */
+    .details-parent {
+        position: fixed;
+        top: 25px; 
+        left: 580px;
+        display: flex;
+        flex-direction: column;
+        z-index: 9999;
+        color: #ffffff;
+        background-color: #08000B;
+        font-family: 'Rubik Mono One', sans-serif;
+    }
+
+    .details {
+        display: flex;
+        justify-content: space-between;
+        padding: 30px;
+    }
+
+    .details img {
+        margin-left: 15px;
+        margin-top: -10px;
+    }
+
+    .details p {
+        margin-left: 15px;
+        margin-top: 15px;
+        font-size: 10px;
+        width: 300px
+    }
+
+    .close-button {
+        color: #ffffff;
+        background-color: #08000B;
+        border: none;
+        border-radius: 60px;
+        width: 10%;
+        margin-top: 20px;
+        margin-left: 315px;
+    }
+
+    .watch {
+        margin-left: 45px;
+        margin-top: -55px;
+        background-color: #ffffff;
+        color: #08000B;
+        width: 80%;
+        margin-bottom: 40px;
+        border: none;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+</style>
+{% endblock %}
 
 
 {% block content %}  
 <div>
-    {% if user.is_authenticated %}
-        <div class="user-element">hi, {{user.username}}   <a href="logout">Logout</a></div>
-    {% else %}
-        <div><a href="login">Login</a>   <a href="register">Register</a></div>
-    {% endif %}
-    <form class="search-form">
-        {%csrf_token%}
-        <input type="text" class="search-input" placeholder="type here">
-        <button type="submit" class="search-button">search</button>
-    </form>
+    <div class="overlay" style="display: none;"></div>
+    <div class="header">
+        <h2 class="user-element-left">MDB</h2>
+        {% if user.is_authenticated %}
+            <div class="user-element-right"><a href="account">{{user.username}}</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="logout">LOGOUT</a></div>
+        {% else %}
+            <div class="user-element-right"><a href="login">LOGIN</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="register">REGISTER</a></div>
+        {% endif %}
+    </div>
 
+    <div class="carousel-container">
+        <div class="carousel-slide">
+            <img src="https://github.com/sruthijaganmohan/images/blob/main/1.png?raw=true" alt="Image 1">
+        </div>
+        <div class="carousel-slide">
+            <img src="https://github.com/sruthijaganmohan/images/blob/main/2.png?raw=true" alt="Image 1">
+        </div>
+        <div class="carousel-slide">
+            <img src="https://github.com/sruthijaganmohan/images/blob/main/3.png?raw=true" alt="Image 1">
+        </div>
+        <div class="carousel-slide">
+            <img src="https://github.com/sruthijaganmohan/images/blob/main/4.png?raw=true" alt="Image 1">
+        </div>
+        <div class="carousel-slide">
+            <img src="https://github.com/sruthijaganmohan/images/blob/main/5.png?raw=true" alt="Image 1">
+        </div>
+        <div class="carousel-slide">
+            <img src="https://github.com/sruthijaganmohan/images/blob/main/6.png?raw=true" alt="Image 1">
+        </div>
+    </div>
 
-    <div class="details-parent" style="background-color:cornflowerblue; position: fixed; top: 0; left: 0;display: flex; justify-content: center; align-items: center; z-index: 9999;">
-        <button class="close-button" style="display: none;">x</button>
-        <div class="details" style="display: none;"></div>
-        <button type="submit" class="watch" style="display: none;">watch</button>
-        
-        
+    <div class="search">
+        <form class="search-form">
+            {%csrf_token%}
+            <input type="text" class="search-input">
+            <button type="submit" class="search-button">search</button>
+        </form>
     </div>
     
 
     <div class="movies-parent">
         <div class="movies"></div>
     </div>
+
+    <div class="details-parent">
+        <button class="close-button" style="display: none;">x</button>
+        <div class="details" style="display: none;"></div>
+        <button type="submit" class="watch" style="display: none;">watch</button>
+    </div>   
 </div>
 
 
 <script>
-    
     const searchForm = document.querySelector('.search-form')
     const searchInput = document.querySelector('.search-input');
     const movies = document.querySelector('.movies');
     const moviesParent = document.querySelector('.movies-parent');
     const details = document.querySelector('.details');
     const closeButton = document.querySelector('.close-button');
-    const watch = document.querySelector('.watch');
-    const watchList = [];
-    var movieClicked = "";
+    const overlay = document.querySelector(".overlay")
+    
 
 
     searchForm.addEventListener('submit', (event) => {
@@ -69,13 +310,10 @@
             
             movies.innerHTML = '';
             for (const item of response) {
-                // console.log(item);
                 const movie = document.createElement('div');
                 movie.classList.add('movie');
                 movie.innerHTML = `
-                    <div>
-                        ${item}
-                    </div>
+                    ${item}
                 `;
                 movies.appendChild(movie);
 
@@ -85,11 +323,10 @@
                     details.style.display = 'block';
                     closeButton.style.display = 'block';
                     watch.style.display = 'block';
+                    overlay.style.display = 'block'
                     details.innerHTML = '';
                     details.innerHTML = `
-                        <div>
-                            ${item}
-                        <div>
+                        ${item}
                     `;                    
                 });  
                 
@@ -97,16 +334,24 @@
                     closeButton.style.display = "none";
                     details.style.display = "none";
                     watch.style.display = "none";
+                    overlay.style.display = "none";
 
                 });
                 
             }
         });
     });
+
+
+    const watch = document.querySelector('.watch');
+    var watchList = "";
+    var movieClicked = "";
     watch.addEventListener('click', (event) => {
-        var parts = movieClicked.split("<br>")
-        var movie = parts[0].trim()
-        watchList.push(movie);
+        var parts = movieClicked.split("<br>");
+        var movie = parts[1].trim();
+        var movie = movie.replace('<p>', '');
+            var movie = movie.replace('</p>', '');
+        watchList = movie;
         console.log(watchList);
         fetch('/account', {
             method: 'POST',
@@ -120,10 +365,33 @@
         .then(data => {
             const response = data.response;
             console.log(response);
-            // localStorage.setItem('response', response);
         });
 
     });
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+    const slides = document.querySelectorAll(".carousel-slide");
+    let currentSlide = 0;
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.style.display = i === index ? "block" : "none";
+        });
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+    }
+    showSlide(currentSlide);
+    setInterval(nextSlide, 3000);
+});
+
+
+
+
+    
 
 </script>
 {% endblock %}
